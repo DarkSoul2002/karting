@@ -13,7 +13,7 @@ class DeelnemerController extends AbstractController
      */
     public function activiteitenAction()
     {
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        $usr = $this->getUser();
 
         $beschikbareActiviteiten = $this->getDoctrine()
             ->getRepository('App:Activiteit')

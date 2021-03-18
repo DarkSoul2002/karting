@@ -20,7 +20,6 @@ class BezoekerController extends AbstractController
      */
     public function indexAction()
     {
-
         return $this->render('bezoeker/index.html.twig', ['boodschap'=>'Welkom']);
     }
 

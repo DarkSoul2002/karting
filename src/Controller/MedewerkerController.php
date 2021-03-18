@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Activiteit;
+use App\Entity\User;
 use App\Form\ActiviteitType;
+use App\Repository\ActiviteitRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +20,7 @@ class MedewerkerController extends AbstractController
     public function activiteitenOverzichtAction()
     {
 
+
         $activiteiten = $this->getDoctrine()
             ->getRepository('App:Activiteit')
             ->findAll();
@@ -29,24 +33,12 @@ class MedewerkerController extends AbstractController
     /**
      * @Route("/admin/details/{id}", name="details")
      */
-    public function detailsAction($id)
+    public function detailsAction(Activiteit $activiteit, ActiviteitRepository $activiteitRepository, UserRepository $userRepository)
     {
-        $activiteiten = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->findAll();
-        $activiteit = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->find($id);
-
-        $deelnemers = $this->getDoctrine()
-            ->getRepository('App:User')
-            ->getDeelnemers($id);
-
-
         return $this->render('medewerker/details.html.twig', [
             'activiteit' => $activiteit,
-            'deelnemers' => $deelnemers,
-            'aantal' => count($activiteiten)
+            'deelnemers' => $userRepository->getDeelnemers($activiteit->getId()),
+            'aantal' => $activiteitRepository->getTotaalActiviteiten(),
         ]);
     }
 
