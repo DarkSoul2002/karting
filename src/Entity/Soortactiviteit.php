@@ -30,6 +30,13 @@ class Soortactiviteit
     private $naam;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="beschrijving", type="string", length=255)
+     */
+    private $beschrijving;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="min_leeftijd", type="integer")
@@ -59,6 +66,38 @@ class Soortactiviteit
     public function __construct()
     {
         $this->activiteiten=new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBeschrijving(): string
+    {
+        return $this->beschrijving;
+    }
+
+    /**
+     * @param string $beschrijving
+     */
+    public function setBeschrijving(string $beschrijving): void
+    {
+        $this->beschrijving = $beschrijving;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getActiviteiten(): ArrayCollection
+    {
+        return $this->activiteiten;
+    }
+
+    /**
+     * @param ArrayCollection $activiteiten
+     */
+    public function setActiviteiten(ArrayCollection $activiteiten): void
+    {
+        $this->activiteiten = $activiteiten;
     }
 
     /**
