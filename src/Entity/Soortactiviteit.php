@@ -71,7 +71,7 @@ class Soortactiviteit
     /**
      * @return string
      */
-    public function getBeschrijving(): string
+    public function getBeschrijving(): ?string
     {
         return $this->beschrijving;
     }

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Activiteit;
+use App\Entity\Soortactiviteit;
 use App\Entity\User;
 use App\Form\ActiviteitType;
+use App\Form\SoortActiviteitType;
 use App\Repository\ActiviteitRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,8 +53,13 @@ class MedewerkerController extends AbstractController
             ->getRepository('App:Activiteit')
             ->findAll();
 
+        $soortactiviteiten = $this->getDoctrine()
+            ->getRepository('App:Soortactiviteit')
+            ->findAll();
+
         return $this->render('medewerker/beheer.html.twig', [
-            'activiteiten' => $activiteiten
+            'activiteiten' => $activiteiten,
+            'soortactiviteiten' => $soortactiviteiten
         ]);
     }
 
@@ -61,10 +68,16 @@ class MedewerkerController extends AbstractController
      */
     public function addAction(Request $request)
     {
-        // create a user and a contact
-        $a = new Activiteit();
+        if ($request->get('soort') === 'activiteit') {
+            $a = new Activiteit();
 
-        $form = $this->createForm(ActiviteitType::class, $a);
+            $form = $this->createForm(ActiviteitType::class, $a);
+        } elseif ($request->get('soort') === 'soortactiviteit') {
+            $a = new Soortactiviteit();
+
+            $form = $this->createForm(SoortActiviteitType::class, $a);
+        }
+
         $form->add('save', SubmitType::class, ['label' => "voeg toe"]);
         //$form->add('reset', ResetType::class, ['label'=>"reset"]);
 
@@ -78,14 +91,14 @@ class MedewerkerController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'activiteit toegevoegd!'
+                'item toegevoegd!'
             );
             return $this->redirectToRoute('beheer');
         }
         $activiteiten = $this->getDoctrine()
             ->getRepository('App:Activiteit')
             ->findAll();
-        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'naam' => 'toevoegen', 'aantal' => count($activiteiten)
+        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'aantal' => count($activiteiten)
         ]);
     }
 
@@ -94,12 +107,22 @@ class MedewerkerController extends AbstractController
      */
     public function updateAction($id, Request $request)
     {
-        $a = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->find($id);
+        if ($request->get('soort') === 'activiteit') {
+            $a = $this->getDoctrine()
+                ->getRepository('App:Activiteit')
+                ->find($id);
 
-        $form = $this->createForm(ActiviteitType::class, $a);
-        $form->add('save', SubmitType::class, ['label' => "aanpassen"]);
+            $form = $this->createForm(ActiviteitType::class, $a);
+            $form->add('save', SubmitType::class, ['label' => "aanpassen"]);
+        } elseif ($request->get('soort') === 'soortactiviteit') {
+            $a = $this->getDoctrine()
+                ->getRepository('App:Soortactiviteit')
+                ->find($id);
+
+            $form = $this->createForm(SoortActiviteitType::class, $a);
+            $form->add('save', SubmitType::class, ['label' => "aanpassen"]);
+        }
+
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,7 +137,7 @@ class MedewerkerController extends AbstractController
             $em->flush();
             $this->addFlash(
                 'notice',
-                'activiteit aangepast!'
+                'Item aangepast!'
             );
             return $this->redirectToRoute('beheer');
         }
@@ -129,17 +152,23 @@ class MedewerkerController extends AbstractController
     /**
      * @Route("/admin/delete/{id}", name="delete")
      */
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $a = $this->getDoctrine()
-            ->getRepository('App:Activiteit')->find($id);
+
+        if ($request->get('soort') === 'activiteit') {
+            $a = $this->getDoctrine()
+                ->getRepository('App:Activiteit')->find($id);
+        } elseif ($request->get('soort') === 'soortactiviteit') {
+            $a = $this->getDoctrine()
+                ->getRepository('App:Soortactiviteit')->find($id);
+        }
         $em->remove($a);
         $em->flush();
 
         $this->addFlash(
             'notice',
-            'activiteit verwijderd!'
+            'Item verwijderd!'
         );
         return $this->redirectToRoute('beheer');
 

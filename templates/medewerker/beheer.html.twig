@@ -6,8 +6,8 @@
 {% endblock %}
 {% block content %}
     <section >
+        <h1>Activiteiten</h1>
         <table class="table" style="table-layout: fixed">
-            <caption>Dit zijn alle activiteiten van het kartcentrum</caption>
             <thead>
             <tr>
                 <td>datum</td>
@@ -27,7 +27,6 @@
                     <td>
                         {{ activiteit.tijd|date("H:i")}}
                     </td>
-
                     <td>
                         {{ activiteit.soort.naam}}
                     </td>
@@ -35,14 +34,12 @@
                         {{ activiteit.users|length}}
                     </td>
                     <td title="bewerk de gegevens van deze activiteit">
-
-
-                        <a href="{{ path('update', {'id':activiteit.id}) }}" >
+                        <a href="{{ path('update', {'id':activiteit.id, 'soort':'activiteit'}) }}" >
                             <span class="glyphicon glyphicon-pencil" style="color:red"></span>
                         </a>
                     </td>
                     <td title="verwijder deze activiteit is definitief">
-                        <a href="{{ path('delete', {'id':activiteit.id}) }}" >
+                        <a href="{{ path('delete', {'id':activiteit.id, 'soort':'activiteit'}) }}" >
                             <span class="glyphicon glyphicon-minus" style="color:red"></span>
                         </a>
                     </td>
@@ -50,17 +47,66 @@
             {% endfor %}
             <tr>
                 <td colspan="6">
-                    <a href="{{ path('add') }}">
+                    <a href="{{ path('add', {'soort':'activiteit'}) }}">
                         <span class="glyphicon glyphicon-plus" style="color:red"></span>
                     </a>
                 </td>
-
             </tr>
-
             </tbody>
-
         </table>
 
+        <h1>Soorten activiteiten</h1>
+        <table class="table" style="table-layout: fixed">
+            <thead>
+            <tr>
+                <td>Naam</td>
+                <td>Beschrijving</td>
+                <td>Min. leeftijd</td>
+                <td>Tijdsduur</td>
+                <td>Prijs</td>
+                <td>bewerken</td>
+                <td>verwijderen</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for soortactiviteit in soortactiviteiten %}
+                <tr>
+                    <td>
+                        {{ soortactiviteit.naam }}
+                    </td>
+                    <td>
+                        {{ soortactiviteit.beschrijving }}
+                    </td>
+                    <td>
+                        {{ soortactiviteit.minLeeftijd }}
+                    </td>
+                    <td>
+                        {{ soortactiviteit.tijdsduur }} min
+                    </td>
+                    <td>
+                        €{{ soortactiviteit.prijs }}
+                    </td>
+                    <td title="bewerk de gegevens van deze activiteit">
+                        <a href="{{ path('update', {'id':soortactiviteit.id, 'soort':'soortactiviteit'}) }}" >
+                            <span class="glyphicon glyphicon-pencil" style="color:red"></span>
+                        </a>
+                    </td>
+                    <td title="verwijder deze activiteit is definitief">
+                        <a href="{{ path('delete', {'id':soortactiviteit.id, 'soort':'soortactiviteit'}) }}" >
+                            <span class="glyphicon glyphicon-minus" style="color:red"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="6">
+                    <a href="{{ path('add', {'soort':'soortactiviteit'}) }}">
+                        <span class="glyphicon glyphicon-plus" style="color:red"></span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
     </section>
 
