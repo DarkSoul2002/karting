@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 
+use App\Entity\Activiteit;
+use App\Entity\User;
+use App\Repository\ActiviteitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DeelnemerController extends AbstractController
@@ -11,21 +16,14 @@ class DeelnemerController extends AbstractController
     /**
      * @Route("/user/activiteiten", name="activiteiten")
      */
-    public function activiteitenAction()
+    public function activiteitenAction(ActiviteitRepository $activiteitRepository): Response
     {
-        $usr = $this->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
 
-        $beschikbareActiviteiten = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->getBeschikbareActiviteiten($usr->getId());
-
-        $ingeschrevenActiviteiten = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->getIngeschrevenActiviteiten($usr->getId());
-
-        $totaal = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->getTotaal($ingeschrevenActiviteiten);
+        $beschikbareActiviteiten = $activiteitRepository->getBeschikbareActiviteiten($user->getId());
+        $ingeschrevenActiviteiten = $activiteitRepository->getIngeschrevenActiviteiten($user->getId());
+        $totaal = $activiteitRepository->getTotaal($ingeschrevenActiviteiten);
 
 
         return $this->render('deelnemer/activiteiten.html.twig', [
@@ -38,18 +36,18 @@ class DeelnemerController extends AbstractController
     /**
      * @Route("/user/inschrijven/{id}", name="inschrijven")
      */
-    public function inschrijvenActiviteitAction($id)
+    public function inschrijvenActiviteitAction(Activiteit $activiteit, EntityManagerInterface $entityManager): Response
     {
+        if (
+            $activiteit->getMaxDeelnemers() > $activiteit->getUsers()->count()
+            && $activiteit->getDatum() >= new \DateTime('today midnight')
+        ) {
+            /** @var User $user */
+            $user = $this->getUser();
+            $user->addActiviteit($activiteit);
 
-        $activiteit = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->find($id);
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
-        $usr->addActiviteit($activiteit);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($usr);
-        $em->flush();
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('activiteiten');
     }
@@ -57,16 +55,14 @@ class DeelnemerController extends AbstractController
     /**
      * @Route("/user/uitschrijven/{id}", name="uitschrijven")
      */
-    public function uitschrijvenActiviteitAction($id)
+    public function uitschrijvenActiviteitAction(Activiteit $activiteit, EntityManagerInterface $entityManager): Response
     {
-        $activiteit = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->find($id);
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
-        $usr->removeActiviteit($activiteit);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($usr);
-        $em->flush();
+        /** @var User $user */
+        $user = $this->getUser();
+        $user->removeActiviteit($activiteit);
+
+        $entityManager->flush();
+
         return $this->redirectToRoute('activiteiten');
     }
 

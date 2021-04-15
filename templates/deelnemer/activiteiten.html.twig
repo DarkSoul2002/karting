@@ -17,6 +17,7 @@
             <td>datum</td>
             <td>tijd</td>
             <td>soort activiteit</td>
+            <td>beschikbaar</td>
             <td>prijs</td>
             <td>schrijf in</td>
         </tr>
@@ -25,17 +26,19 @@
         {% for activiteit in beschikbare_activiteiten %}
         <tr>
             <td>
-                {{ activiteit.datum|date("d-m-Y")}}
+                {{ activiteit.datum|date("d-m-Y") }}
             </td>
             <td>
-                {{ activiteit.tijd|date("H:i")}}
-            </td>
-
-            <td>
-                {{ activiteit.soort.naam}}
+                {{ activiteit.tijd|date("H:i") }}
             </td>
             <td>
-                &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
+                {{ activiteit.naam }}
+            </td>
+            <td>
+                {{ activiteit.maxDeelnemers - activiteit.totaalRegistraties }} van de {{ activiteit.maxDeelnemers }}
+            </td>
+            <td>
+                &euro;{{ activiteit.prijs|number_format(2,',','.') }}
             </td>
             <td title="schrijf in voor activiteit">
 
@@ -58,6 +61,7 @@
             <td>datum</td>
             <td>tijd</td>
             <td>soort activiteit</td>
+            <td>beschikbaar</td>
             <td>prijs</td>
             <td>schrijf uit</td>
         </tr>
@@ -71,12 +75,14 @@
                 <td>
                     {{ activiteit.tijd|date("H:i")}}
                 </td>
-
                 <td>
-                    {{ activiteit.soort.naam}}
+                    {{ activiteit.naam}}
                 </td>
                 <td>
-                    &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
+                    {{ activiteit.maxDeelnemers - activiteit.totaalRegistraties }} van de {{ activiteit.maxDeelnemers }}
+                </td>
+                <td>
+                    &euro;{{ activiteit.prijs|number_format(2,',','.')}}
                 </td>
                 <td title="schrijf in voor activiteit">
                     <a href="{{ path('uitschrijven', {'id':activiteit.id}) }}" >

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Activiteit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,27 +21,42 @@ class ActiviteitRepository extends ServiceEntityRepository
         parent::__construct($registry, Activiteit::class);
     }
 
-    public function getBeschikbareActiviteiten($userid)
+    public function getBeschikbareActiviteiten($userid): array
     {
-        $em = $this->getEntityManager();
-        $query = $em->createQuery("SELECT a FROM App:Activiteit a WHERE :userid NOT MEMBER OF a.users ORDER BY a.datum");
-
-        $query->setParameter('userid', $userid);
-
-        return $query->getResult();
+        return $this->createQueryBuilder('a')
+            ->select('a.id, a.datum, a.tijd, a.max_deelnemers as maxDeelnemers')
+            ->leftJoin('a.users', 'u', Join::WITH, 'u.id = :id')
+            ->andWhere('u.id IS NULL')
+            ->setParameter('id', $userid)
+            ->join('a.soort', 's')
+            ->addSelect('s.naam, s.prijs')
+            ->leftJoin('a.users', 'u1')
+            ->addSelect('COUNT(u1.id) as totaalRegistraties')
+            ->andWhere('a.datum >= CURRENT_DATE()')
+            ->having('maxDeelnemers > totaalRegistraties')
+            ->groupBy('a.id')
+            ->orderBy('a.datum')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getIngeschrevenActiviteiten($userid)
     {
+
         return $this->createQueryBuilder('a')
-            ->join('a.users', 'u')
-            ->andWhere('u.id = :userid')
+            ->select('a.id, a.datum, a.tijd, a.max_deelnemers as maxDeelnemers')
+            ->leftJoin('a.users', 'u',)
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $userid)
+            ->join('a.soort', 's')
+            ->addSelect('s.naam, s.prijs')
+            ->leftJoin('a.users', 'u1')
+            ->addSelect('COUNT(u1.id) as totaalRegistraties')
             ->andWhere('a.datum >= CURRENT_DATE()')
+            ->groupBy('a.id')
             ->orderBy('a.datum')
-            ->setParameter('userid', $userid)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function getTotaal($activiteiten)
@@ -48,7 +64,7 @@ class ActiviteitRepository extends ServiceEntityRepository
 
         $totaal = 0;
         foreach ($activiteiten as $a) {
-            $totaal += $a->getSoort()->getPrijs();
+            $totaal += $a['prijs'];
         }
         return $totaal;
 
@@ -60,8 +76,7 @@ class ActiviteitRepository extends ServiceEntityRepository
             ->andWhere('a.datum >= CURRENT_DATE()')
             ->orderBy('a.datum')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     public function getTotaalActiviteiten(): int
@@ -70,5 +85,18 @@ class ActiviteitRepository extends ServiceEntityRepository
             ->select('count(a.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function getAantalDeelnemers($activiteitid)
+    {
+        $em = $this->getEntityManager();
+
+
+        $query = $em->createQuery("SELECT d FROM App:User d WHERE :activiteitid MEMBER OF d.activiteiten")
+            ->getSingleScalarResult();
+
+        $query->setParameter('activiteitid', $activiteitid);
+
+        return $query->getResult();
     }
 }
