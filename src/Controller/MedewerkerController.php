@@ -98,8 +98,7 @@ class MedewerkerController extends AbstractController
         $activiteiten = $this->getDoctrine()
             ->getRepository('App:Activiteit')
             ->findAll();
-        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'aantal' => count($activiteiten)
-        ]);
+        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'activiteiten' => $activiteiten]);
     }
 
     /**
@@ -146,7 +145,7 @@ class MedewerkerController extends AbstractController
             ->getRepository('App:Activiteit')
             ->findAll();
 
-        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'naam' => 'aanpassen', 'aantal' => count($activiteiten)]);
+        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'activiteiten' => $activiteiten]);
     }
 
     /**

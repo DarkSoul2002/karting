@@ -1,0 +1,17 @@
+{% extends 'medewerker.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('activiteitenoverzicht') }}">home</a></li>
+    <li><a href="{{ path('beheer') }}">Beheer activiteiten</a></li>
+    <li class="active"><a href="{{ path('user_index') }}">Beheer gebruiker</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Create new User</h1>
+
+    {{ include('medewerker/user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">back to list</a>
+{% endblock %}
