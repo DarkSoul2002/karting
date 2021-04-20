@@ -145,7 +145,7 @@ class MedewerkerController extends AbstractController
             ->getRepository('App:Activiteit')
             ->findAll();
 
-        return $this->render('medewerker/add.html.twig', ['form' => $form->createView(), 'activiteiten' => $activiteiten]);
+        return $this->render('medewerker/edit.html.twig', ['form' => $form->createView(), 'activiteiten' => $activiteiten]);
     }
 
     /**
