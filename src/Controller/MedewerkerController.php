@@ -19,13 +19,9 @@ class MedewerkerController extends AbstractController
     /**
      * @Route("/admin/activiteiten", name="activiteitenoverzicht")
      */
-    public function activiteitenOverzichtAction()
+    public function activiteitenOverzichtAction(ActiviteitRepository $activiteitRepository)
     {
-
-
-        $activiteiten = $this->getDoctrine()
-            ->getRepository('App:Activiteit')
-            ->findAll();
+        $activiteiten = $activiteitRepository->findAll();
 
         return $this->render('medewerker/activiteiten.html.twig', [
             'activiteiten' => $activiteiten
