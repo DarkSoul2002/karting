@@ -1,8 +1,7 @@
 {% extends 'deelnemer.html.twig' %}
 {% block menu %}
-    <li><a href="{{ path('activiteiten') }}">home</a></li>
-
-
+    <li class="active"><a href="{{ path('activiteiten') }}">home</a></li>
+    <li><a href="{{ path('edit', {'id':user.id}) }}">profiel</a></li>
 {% endblock %}
 
 

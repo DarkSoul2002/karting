@@ -1,0 +1,17 @@
+{% extends 'medewerker.html.twig' %}
+
+{% block title %}Profiel bewerken{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('activiteiten') }}">home</a></li>
+    <li class="active"><a href="{{ path('edit', {'id':user.id}) }}">profiel</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Profiel bewerken</h1>
+
+    {{ include('medewerker/user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('user_index') }}">back to list</a>
+
+{% endblock %}
