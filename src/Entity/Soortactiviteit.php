@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -82,22 +83,6 @@ class Soortactiviteit
     public function setBeschrijving(string $beschrijving): void
     {
         $this->beschrijving = $beschrijving;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getActiviteiten(): ArrayCollection
-    {
-        return $this->activiteiten;
-    }
-
-    /**
-     * @param ArrayCollection $activiteiten
-     */
-    public function setActiviteiten(ArrayCollection $activiteiten): void
-    {
-        $this->activiteiten = $activiteiten;
     }
 
     /**

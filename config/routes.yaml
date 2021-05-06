@@ -1,3 +1,5 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+  path: /{wildcard}
+  controller: App\Controller\BezoekerController::indexAction
+  requirements:
+    wildcard: .*

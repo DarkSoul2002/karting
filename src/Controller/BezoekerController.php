@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Activiteit;
 use App\Entity\Soortactiviteit;
 use App\Entity\User;
 use App\Form\ActiviteitType;
@@ -20,17 +21,18 @@ class BezoekerController extends AbstractController
      */
     public function indexAction()
     {
-        return $this->render('bezoeker/index.html.twig', ['boodschap'=>'Welkom']);
+        return $this->render('base_vue_bezoekerhtml.twig');
     }
 
     /**
-     * @Route("/kartactiviteiten", name="kartactiviteiten")
+     * @Route("/aanbodapi", name="aanbodapi")
      */
-    public function kartactiviteitenAction()
+    public function aanbodapi()
     {
         $repository=$this->getDoctrine()->getRepository(Soortactiviteit::class);
         $soortactiviteiten=$repository->findAll();
-        return $this->render('bezoeker/kartactiviteiten.html.twig', ['boodschap'=>'Welkom','soortactiviteiten'=>$soortactiviteiten]);
+
+        return $this->json($soortactiviteiten);
     }
 
     /**

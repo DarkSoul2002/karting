@@ -58,6 +58,8 @@ Encore
 
     .enableVueLoader()
 
+    .enableVersioning()
+
     .addAliases({
         'Bezoeker': path.resolve(__dirname, 'assets/bezoeker'),
         'Medewerker': path.resolve(__dirname, 'assets/medewerker'),

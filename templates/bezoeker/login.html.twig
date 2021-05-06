@@ -1,10 +1,10 @@
 {% extends 'bezoeker.html.twig' %}
 
 {% block menu %}
-    <li><a href="{{ path('homepage') }}">home</a></li>
-    <li><a href="{{ path('kartactiviteiten') }}">aanbod</a></li>
-    <li><a href="{{ path('registreren') }}">registreren</a></li>
-    <li><a href="#">contact</a></li>
+    <li><a href="{{ path('homepage') }}">Home</a></li>
+    <li><a href="/aanbod">Aanbod</a></li>
+    <li><a href="{{ path('registreren') }}">Registreren</a></li>
+    <li><a href="/contact">Contact</a></li>
 {% endblock %}
 
 {% block content %}
