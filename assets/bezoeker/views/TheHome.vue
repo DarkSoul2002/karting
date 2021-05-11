@@ -44,16 +44,7 @@
 
 <script>
 export default {
-  name: 'home',
-  data() {
-    return {
-      items: [
-        { name: 'login' },
-        { name: 'register' },
-        { name: 'home' }
-      ]
-    };
-  }
+  name: 'home'
 };
 </script>
 

@@ -1,7 +1,7 @@
-import 'Bezoeker/styles/app.css';
+import './styles/app.css';
 import Vue from 'vue';
 import router from './routes.js';
-import App from 'Bezoeker/App.vue'
+import App from './App.vue'
 
 new Vue({
     el: '#app',

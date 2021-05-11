@@ -15,15 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
-* @Route("user/")
+* @Route("deelnemer/")
 * @IsGranted("ROLE_USER")
 */
 class DeelnemerController extends AbstractController
 {
     /**
-     * @Route("activiteiten", name="activiteiten")
+     * @Route("activiteitenapi", name="activiteitenapi")
      */
-    public function activiteitenAction(ActiviteitRepository $activiteitRepository): Response
+    public function activiteitenapi(ActiviteitRepository $activiteitRepository)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -33,12 +33,7 @@ class DeelnemerController extends AbstractController
         $totaal = $activiteitRepository->getTotaal($ingeschrevenActiviteiten);
 
 
-        return $this->render('deelnemer/activiteiten.html.twig', [
-            'beschikbare_activiteiten' => $beschikbareActiviteiten,
-            'ingeschreven_activiteiten' => $ingeschrevenActiviteiten,
-            'totaal' => $totaal,
-            'user' => $user
-        ]);
+        return $this->json([$user, $beschikbareActiviteiten, $ingeschrevenActiviteiten, $totaal]);
     }
 
     /**
@@ -53,11 +48,12 @@ class DeelnemerController extends AbstractController
             /** @var User $user */
             $user = $this->getUser();
             $user->addActiviteit($activiteit);
-
+            $entityManager->persist($user);
             $entityManager->flush();
+            return $this->json(1);
+        } else {
+            return $this->json(1);
         }
-
-        return $this->redirectToRoute('activiteiten');
     }
 
     /**
@@ -69,34 +65,75 @@ class DeelnemerController extends AbstractController
         $user = $this->getUser();
         $user->removeActiviteit($activiteit);
 
+        $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('activiteiten');
+        return $this->json(1);
+    }
+
+//    /**
+//     * @Route("{id}/edit", name="edit", methods={"GET","POST"})
+//     */
+//    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+//    {
+//        $form = $this->createForm(UserType::class, $user);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+//            $user->setPassword($password);
+//
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->persist($user);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('activiteiten');
+//        }
+//
+//        return $this->render('deelnemer/edit.html.twig', [
+//            'user' => $user,
+//            'form' => $form->createView(),
+//        ]);
+//    }
+
+    /**
+     * @Route("/api/user/activiteiten", name="apiactiviteitenuser")
+     */
+    public function profile()
+    {
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        $ingeschrevenActiviteiten = $this->getDoctrine()
+            ->getRepository('App:Activiteit')
+            ->getIngeschrevenActiviteiten($usr->getId());
+
+        return $this->json($ingeschrevenActiviteiten);
     }
 
     /**
-     * @Route("{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/logout", name="app_logout")
      */
-    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function logout()
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('activiteiten');
-        }
-
-        return $this->render('deelnemer/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    /**
+     * @Route("/profilechangeapi", name="profilechangeapi", methods="POST")
+     */
+    public function profileChange(Request $request)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(UserType::class, $user);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return $this->json(204);
+
+
+    }
+
 }

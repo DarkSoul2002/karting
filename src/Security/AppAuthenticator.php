@@ -91,10 +91,10 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('activiteitenoverzicht'));
         }
         if ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            return new RedirectResponse($this->urlGenerator->generate('activiteiten'));
+            return new RedirectResponse('/deelnemer/activiteiten');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+        return new RedirectResponse('/');
     }
 
     protected function getLoginUrl(): string

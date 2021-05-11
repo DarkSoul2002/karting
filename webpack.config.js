@@ -21,7 +21,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('bezoeker', './assets/bezoeker/app.js')
+    .addEntry('app', './assets/app.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -60,10 +60,10 @@ Encore
 
     .enableVersioning()
 
-    .addAliases({
-        'Bezoeker': path.resolve(__dirname, 'assets/bezoeker'),
-        'Medewerker': path.resolve(__dirname, 'assets/medewerker'),
-    })
+    // .addAliases({
+    //     'Bezoeker': path.resolve(__dirname, 'assets/bezoeker'),
+    //     'Deelnemer': path.resolve(__dirname, 'assets/deelnemer'),
+    // })
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

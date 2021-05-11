@@ -17,14 +17,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class BezoekerController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction()
-    {
-        return $this->render('base_vue_bezoekerhtml.twig');
-    }
-
-    /**
      * @Route("/aanbodapi", name="aanbodapi")
      */
     public function aanbodapi()

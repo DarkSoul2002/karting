@@ -1,5 +1,5 @@
 index:
   path: /{wildcard}
-  controller: App\Controller\BezoekerController::indexAction
+  controller: App\Controller\BaseController::indexAction
   requirements:
     wildcard: .*

@@ -37,7 +37,6 @@ export default {
     const response = await axios.get('/aanbodapi')
     this.aanbods = response.data
   },
-
 }
 </script>
 
