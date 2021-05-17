@@ -26,14 +26,22 @@
           </div>
 
           <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav" v-if="this.user">
-              <li>
-                <router-link to="/deelnemer/activiteiten">Activiteiten</router-link>
-              </li>
-              <li>
-                <router-link to="/user/profile">Profiel</router-link>
-              </li>
-            </ul>
+            <div v-if="this.user">
+              <ul class="nav navbar-nav">
+                <li>
+                  <router-link to="/deelnemer/activiteiten">Activiteiten</router-link>
+                </li>
+                <li>
+                  <a v-bind:href="user.id + '/edit/'">Profiel</a>
+                </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <a href="/logout">Uitloggen</a>
+                </li>
+              </ul>
+            </div>
+
             <div v-else>
               <ul class="nav navbar-nav">
                 <li>

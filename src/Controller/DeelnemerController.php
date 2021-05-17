@@ -71,31 +71,31 @@ class DeelnemerController extends AbstractController
         return $this->json(1);
     }
 
-//    /**
-//     * @Route("{id}/edit", name="edit", methods={"GET","POST"})
-//     */
-//    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
-//    {
-//        $form = $this->createForm(UserType::class, $user);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-//            $user->setPassword($password);
-//
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->persist($user);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('activiteiten');
-//        }
-//
-//        return $this->render('deelnemer/edit.html.twig', [
-//            'user' => $user,
-//            'form' => $form->createView(),
-//        ]);
-//    }
+    /**
+     * @Route("{id}/edit", name="edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirect('/deelnemer/activiteiten');
+        }
+
+        return $this->render('deelnemer/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
 
     /**
      * @Route("/api/user/activiteiten", name="apiactiviteitenuser")
@@ -116,24 +116,6 @@ class DeelnemerController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    /**
-     * @Route("/profilechangeapi", name="profilechangeapi", methods="POST")
-     */
-    public function profileChange(Request $request)
-    {
-        $user = $this->getUser();
-
-        $form = $this->createForm(UserType::class, $user);
-        $data = json_decode($request->getContent(), true);
-        $form->submit($data);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-        return $this->json(204);
-
-
     }
 
 }

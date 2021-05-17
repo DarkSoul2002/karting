@@ -6,7 +6,6 @@ import Aanbod from './bezoeker/views/aanbod';
 import Contact from './bezoeker/views/contact';
 
 import Activiteiten from './deelnemer/views/activiteiten';
-import UserProfileChange from './deelnemer/views/profilechange';
 
 Vue.use(VueRouter);
 
@@ -18,7 +17,6 @@ const router = new VueRouter({
         { path: '/contact', name: 'contact', component: Contact },
 
         { path: '/deelnemer/activiteiten', name: 'activiteiten', component: Activiteiten },
-        { path: '/user/profile/change', name: 'userprofilechange', component: UserProfileChange }
     ]
 });
 

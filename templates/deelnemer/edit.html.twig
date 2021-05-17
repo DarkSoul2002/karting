@@ -3,8 +3,8 @@
 {% block title %}Profiel bewerken{% endblock %}
 
 {% block menu %}
-    <li><a href="{{ path('activiteiten') }}">home</a></li>
-    <li class="active"><a href="{{ path('edit', {'id':user.id}) }}">profiel</a></li>
+    <li><a href="/deelnemer/activiteiten">Activiteiten</a></li>
+    <li class="active"><a href="{{ path('edit', {'id':user.id}) }}">Profiel</a></li>
 {% endblock %}
 
 {% block content %}
@@ -12,6 +12,6 @@
 
     {{ include('medewerker/user/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <li><a href="/deelnemer/activiteiten">Terug naar activiteiten</a></li>
 
 {% endblock %}

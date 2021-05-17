@@ -61,7 +61,7 @@ class BezoekerController extends AbstractController
                     $user->getNaam().' is geregistreerd!'
                 );
 
-                return $this->redirectToRoute('homepage');
+                return $this->render('bezoeker:login.html.twig');
             }
             else
             {
