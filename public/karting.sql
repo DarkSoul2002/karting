@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2021 at 06:07 PM
+-- Generation Time: May 24, 2021 at 05:00 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -70,9 +70,11 @@ CREATE TABLE `app_users` (
 --
 
 INSERT INTO `app_users` (`id`, `username`, `password`, `email`, `roles`, `voorletters`, `tussenvoegsel`, `achternaam`, `adres`, `postcode`, `woonplaats`, `telefoon`) VALUES
-(1, 'Dayton', '$argon2id$v=19$m=65536,t=4,p=1$WmdNSjN4L2N2Li9uaHVMYQ$Fj0W37VMYjJCBgreQxMS+lGQOL55Cz1V7LUQ3vjckG4', 'dayton@email.com', '[\"ROLE_ADMIN\"]', 'D B', NULL, 'Boone', 'De Brink 1016', '2553HX', 'Den Haag', '0644221558'),
-(2, 'User', '$argon2id$v=19$m=65536,t=4,p=1$VFJBZ3k2dEpKVC9pQTBpbQ$tQSBOG8sXLtmUFuh/VTTLnnhRPoHv/YfJ4Qc4E1RTTY', 'user@email.com', '[\"ROLE_USER\"]', 'U', NULL, 'U', 'user 1', 'USER 11', 'Den Haag', '06123'),
-(3, 'User2', '$argon2id$v=19$m=65536,t=4,p=1$OU9YenFORExqUkdGWjFDSQ$0oXGf5vyrLVb5qz1B0QNlJEJ8/X6rRyFSF28PODg4Lo', 'user2@mail.com', '[\"ROLE_USER\"]', 'u', 's', 'er', 'user 10', 'user11', 'Den Haag', '061234567');
+(1, 'Dayton', '$argon2id$v=19$m=65536,t=4,p=1$WU5EMmZFU1haM1oxR2dTWQ$TkaCeCPfbBICmA5tEe3mQ7NDBb5wU3t//jWNhfEOapc', 'dayton@email.com', '[\"ROLE_ADMIN\"]', 'D B', NULL, 'Boone', 'De Brink 1016', '2553HX', 'Den Haag', '0644221558'),
+(2, 'User', '$argon2id$v=19$m=65536,t=4,p=1$R1QyaGZObG05eWZLOTE4cA$WaqRmqs1dqcQ+XrFzl3keLIzdo9HCG1NOcwdypSxwPQ', 'user@email.com', '[\"ROLE_USER\"]', 'D', NULL, 'Booneeeee', 'user 1', 'USER 11', 'Den Haag', '0612345678'),
+(3, 'User2', '$argon2id$v=19$m=65536,t=4,p=1$OU9YenFORExqUkdGWjFDSQ$0oXGf5vyrLVb5qz1B0QNlJEJ8/X6rRyFSF28PODg4Lo', 'user2@mail.com', '[\"ROLE_USER\"]', 'u', 's', 'er', 'user 10', 'user11', 'Den Haag', '061234567'),
+(4, 'Boone', '$argon2id$v=19$m=65536,t=4,p=1$T3ZsTjZGbGNMUU5QcS8zZQ$ZtKdb5+75VIaBpN6aMkbzBI7MYEsgX89r6hbYXzJo6k', 'Boone@email.com', '[\"ROLE_USER\"]', 'b', 'oo', 'ne', 'boone 1', 'BOON 11', 'Den Haag', '0612345678'),
+(5, 'Booneee', '$argon2id$v=19$m=65536,t=4,p=1$RllTTWhpdXZnbE10Y25lOA$sd+rZPe7yvAMQfK8Y1o0YgUJnsA0q7MRdO3xKXO9qUQ', 'Boone@email.com', '[\"ROLE_USER\"]', 'b', 'oo', 'ne', 'boone 1', 'BOON 11', 'Den Haag', '0612345677');
 
 -- --------------------------------------------------------
 
@@ -91,7 +93,8 @@ CREATE TABLE `deelnames` (
 
 INSERT INTO `deelnames` (`user_id`, `activiteit_id`) VALUES
 (2, 5),
-(3, 4);
+(3, 4),
+(5, 6);
 
 -- --------------------------------------------------------
 
@@ -189,13 +192,13 @@ ALTER TABLE `activiteiten`
 -- AUTO_INCREMENT for table `app_users`
 --
 ALTER TABLE `app_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `soortactiviteiten`
 --
 ALTER TABLE `soortactiviteiten`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
